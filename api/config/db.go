@@ -10,11 +10,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type DB struct {
-	DB *gorm.DB
-}
-
-func DBconnection(url string) *DB {
+func DBconnection(url string) *gorm.DB {
 	newLogger := logger.New(
         log.New(os.Stdout, "\r\n", log.LstdFlags),
         logger.Config{
@@ -29,5 +25,5 @@ func DBconnection(url string) *DB {
 		log.Fatal(err)
 	}
 
-	return &DB{DB: db}
+	return db
 }
