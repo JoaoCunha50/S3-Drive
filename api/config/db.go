@@ -24,6 +24,6 @@ func DBconnection(url string) *gorm.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	
 	return db
 }
