@@ -40,7 +40,7 @@ func (r *UserRepository) GetUser(id int) (*User, error) {
 	return &user, nil
 }
 
-func (r *UserRepository) LoginUser(email string, username string, password string) error {
+func (r *UserRepository) LoginUser(email *string, username *string, password string) error {
 	var user User
 	var storedHash []byte
 	userFound := true

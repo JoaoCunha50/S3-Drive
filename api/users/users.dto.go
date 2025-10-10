@@ -8,3 +8,9 @@ type UserResponseDTO struct {
 	ProfilePic string
 	ProfileDescription string
 }
+
+type LoginRequest struct {
+	Email *string
+	Username *string
+	Password string
+}
