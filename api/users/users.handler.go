@@ -2,9 +2,11 @@ package users
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 type UserHandler struct {
@@ -58,5 +60,30 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 }
 
 func (h *UserHandler) GetUser(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+	id := c.Param("id")
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return 
+	}
+	
+	user, err := h.repo.GetUser(idInt)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	userResponse := UserResponseDTO{
+		ID: user.ID,
+		Name: user.Name,
+		Username: user.Username,
+		Email: user.Email,
+		ProfilePic: user.ProfilePic,
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": userResponse})
 }

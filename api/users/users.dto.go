@@ -6,7 +6,6 @@ type UserResponseDTO struct {
 	Username string
 	Email string
 	ProfilePic string
-	ProfileDescription string
 }
 
 type LoginRequest struct {
