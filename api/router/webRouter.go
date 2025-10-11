@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupRoutes(r *gin.Engine, db *gorm.DB) {
+func WebRouter(r *gin.RouterGroup, db *gorm.DB) {
     userGroup := r.Group("/users")
     users.RegisterUserRoutes(userGroup, db)
 }

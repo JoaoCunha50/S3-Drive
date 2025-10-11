@@ -12,8 +12,7 @@ func main() {
 	db := config.DBconnection(env.DATABASE_URL)
 	
 	r := gin.Default()
-
-	router.SetupRoutes(r, db)
+	router.SetupMainRouter(r, db)
 	
 	r.Run(":" + env.PORT)
 }

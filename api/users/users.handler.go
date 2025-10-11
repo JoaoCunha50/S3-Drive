@@ -50,7 +50,7 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 		return
 	}
 
-	err = h.repo.LoginUser(request.Email, request.Username, request.Password)
+	err = h.repo.LoginUser(request.email, request.username, request.password)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
@@ -78,11 +78,11 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 	}
 
 	userResponse := UserResponseDTO{
-		ID: user.ID,
-		Name: user.Name,
-		Username: user.Username,
-		Email: user.Email,
-		ProfilePic: user.ProfilePic,
+		id: user.ID,
+		name: user.Name,
+		username: user.Username,
+		email: user.Email,
+		profilePic: user.ProfilePic,
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": userResponse})
