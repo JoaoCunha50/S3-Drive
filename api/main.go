@@ -2,23 +2,18 @@ package main
 
 import (
 	"api/config"
+	"api/router"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	r := gin.Default()
 	env := config.LoadConfig()
 	db := config.DBconnection(env.DATABASE_URL)
+	
+	r := gin.Default()
 
-	r.Use(func(c *gin.Context) {
-		c.Set("db", db)
-		c.Next()
-	})
-
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(200, "pong")
-	})
+	router.SetupRoutes(r, db)
 	
 	r.Run(":" + env.PORT)
 }
