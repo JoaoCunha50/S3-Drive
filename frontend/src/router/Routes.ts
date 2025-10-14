@@ -1,16 +1,16 @@
-import { lazy } from "react";
-import { type RouteProps } from "react-router";
+import { lazy } from 'react'
+import { type RouteProps } from 'react-router'
 
-import Login from "../pages/Login";
-const Home = lazy(() => import("../pages/Home"));
+import Login from '../pages/Login/Login'
+const Home = lazy(() => import('../pages/Home'))
 
 export const routes: RouteProps[] = [
     {
-        path: "/login",
+        path: '/login',
         Component: Login,
     },
     {
-        path: "/",
+        path: '/',
         Component: Home,
     },
-];
+]

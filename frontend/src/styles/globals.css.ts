@@ -1,4 +1,5 @@
 import { globalStyle } from '@vanilla-extract/css'
+import { BackgroundGray } from './colors'
 
 globalStyle('*', {
     boxSizing: 'border-box',
@@ -10,16 +11,7 @@ globalStyle(':root', {
     fontWeight: 400,
     WebkitFontSmoothing: 'antialiased',
     MozOsxFontSmoothing: 'grayscale',
-})
-
-globalStyle('body', {
-    margin: 0,
-    display: 'flex',
-    placeItems: 'center',
-    minWidth: '320px',
-    minHeight: '100vh',
-    color: 'rgba(255, 255, 255, 0.87)',
-    backgroundColor: '#242424',
+    backgroundColor: BackgroundGray,
 })
 
 globalStyle('a', {
@@ -55,11 +47,6 @@ globalStyle('button:hover', {
 
 globalStyle('button:focus, button:focus-visible', {
     outline: '4px auto -webkit-focus-ring-color',
-})
-
-globalStyle('[data-mantine-color-scheme="light"]', {
-    color: '#213547',
-    backgroundColor: '#ffffff',
 })
 
 globalStyle('[data-mantine-color-scheme="light"] a:hover', {
