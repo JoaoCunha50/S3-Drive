@@ -1,42 +1,42 @@
 services:
-  db:
-    image: postgres:18
-    ports:
-      - "5435:5432"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "minio-drive"
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 3s
-      timeout: 3s
-      retries: 5
+    db:
+        image: postgres:18
+        ports:
+            - '5435:5432'
+        environment:
+            POSTGRES_USER: 'postgres'
+            POSTGRES_PASSWORD: 'postgres'
+            POSTGRES_DB: 'minio-drive'
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U postgres']
+            interval: 3s
+            timeout: 3s
+            retries: 5
 
-  api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./api:/api
-    
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+    api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+        ports:
+            - '3000:3000'
+        depends_on:
+            db:
+                condition: service_healthy
+        volumes:
+            - ./api:/api/
+
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        ports:
+            - '5173:5173'
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
 
 volumes:
-  db-data:
-    driver: local
+    db-data:
+        driver: local

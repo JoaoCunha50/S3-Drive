@@ -1,10 +1,55 @@
 import { Button, Image, TextInput } from '@mantine/core'
+import { AxiosError } from 'axios'
 import { AtSignIcon, Eye, EyeClosed } from 'lucide-react'
 import { useState } from 'react'
-import { actions, form, header, paper, title, wrapper } from './styles.css'
+import { api } from '../../config/api'
+import {
+    actions,
+    error,
+    form,
+    header,
+    paper,
+    title,
+    wrapper,
+} from './styles.css'
+
+type FormData = {
+    email: string
+    username: string
+    password: string
+}
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false)
+    const [errorMessage, setError] = useState<string | null>(null)
+    const [formData, setFormData] = useState<FormData>({
+        email: '',
+        username: '',
+        password: '',
+    })
+
+    async function onSubmit() {
+        try {
+            console.log(api)
+            const response = await api.post('/users/login', { ...formData })
+            if (response.status === 200) {
+                console.log(response.data)
+                window.location.href = '/'
+            } else {
+                setError('Invalid credentials')
+            }
+        } catch (error) {
+            console.log(error)
+
+            if (error instanceof AxiosError && error.status === 404) {
+                console.log(error)
+                setError('')
+                setError('Invalid credentials')
+            } else {
+                setError('Something wrong happened...')
+            }
+        }
+    }
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword)
@@ -20,15 +65,21 @@ export default function Login() {
                 <div className={form}>
                     <TextInput
                         variant="filled"
-                        label="Email"
-                        placeholder="Email"
+                        label="Email or Username"
+                        placeholder="johndoe(@gmail.com)"
                         radius={'md'}
                         type="email"
                         rightSectionPointerEvents={'all'}
                         rightSection={
                             <AtSignIcon size={18} strokeWidth={2.5} />
                         }
-                        //error="Invalid email"
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                email: e.target.value,
+                                username: e.target.value,
+                            })
+                        }
                         required
                     />
                     <TextInput
@@ -37,6 +88,12 @@ export default function Login() {
                         placeholder="NiceSecure123$%&"
                         radius={'md'}
                         type={showPassword ? 'text' : 'password'}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                password: e.target.value,
+                            })
+                        }
                         //error="Invalid password"
                         rightSection={
                             <>
@@ -59,8 +116,15 @@ export default function Login() {
                         }
                         required
                     />
+                    <h1 className={error}>{errorMessage}</h1>
                     <div className={actions}>
-                        <Button variant="gradient" size="md" fullWidth>
+                        <Button
+                            type="submit"
+                            variant="gradient"
+                            size="md"
+                            fullWidth
+                            onClick={onSubmit}
+                        >
                             Login
                         </Button>
                     </div>

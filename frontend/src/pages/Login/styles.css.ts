@@ -10,7 +10,7 @@ export const wrapper = style({
 })
 
 export const paper = style({
-    width: '40%',
+    width: '45%',
     maxWidth: '50%',
     backgroundColor: SurfaceGray,
     padding: '5% 6% 5% 6%',
@@ -48,5 +48,10 @@ export const actions = style({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: '50px',
+    marginTop: '20px',
+})
+
+export const error = style({
+    color: 'red',
+    fontSize: '10px',
 })

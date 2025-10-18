@@ -1,1 +1,1 @@
-export const API = `${import.meta.env.VITE_API_URI}/web`;
+export const API = `${import.meta.env.VITE_BACKEND_URI}/web`
