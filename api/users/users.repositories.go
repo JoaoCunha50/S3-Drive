@@ -22,7 +22,7 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 }
 
 func (r *UserRepository) CreateUser(user *User) error {
-	err := r.db.Create(&user).Error
+	err := r.db.Create(user).Error
 	if err != nil {
 		return err
 	}
@@ -42,22 +42,39 @@ func (r *UserRepository) GetUser(id int) (*User, error) {
 
 func (r *UserRepository) LoginUser(email *string, username *string, password string) error {
 	var user User
+    q := r.db.Model(&User{})
+
+    haveCond := false
+    if email != nil {
+        q = q.Where("email = ?", *email)
+        haveCond = true
+    }
+
+    if username != nil {
+        if haveCond {
+            q = q.Or("username = ?", *username)
+        } else {
+            q = q.Where("username = ?", *username)
+            haveCond = true
+        }
+    }
+
 	var storedHash []byte
 	userFound := true
 
-	err := r.db.First(&user, "email = ? OR username = ?", email, username).Error
+	if err := q.First(&user).Error; err != nil {
+        if errors.Is(err, gorm.ErrRecordNotFound) {
+            storedHash = fakeHash
+            userFound = false
+        } else {
+            return err
+        }
+    } else {
+        storedHash = []byte(user.Password)
+    }
 
-	switch (err) {
-	case gorm.ErrRecordNotFound:
-		storedHash = fakeHash
-		userFound = false
-	case nil:
-		storedHash = []byte(user.Password)
-	default:
-		return err
-	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(password))
+	err := bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(password))
 	if err != nil {
 		return errors.New("invalid credentials")
 	}

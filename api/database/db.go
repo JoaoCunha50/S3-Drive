@@ -1,6 +1,7 @@
 package database
 
 import (
+	"api/translations"
 	"api/users"
 	"log"
 	"os"
@@ -28,7 +29,7 @@ func DBconnection(url string) *gorm.DB {
 		log.Fatal(err)
 	}
 
-	db.AutoMigrate(&users.User{})
+	db.AutoMigrate(&users.User{}, &translations.Translation{})
 	
 	return db
 }

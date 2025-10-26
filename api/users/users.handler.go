@@ -18,7 +18,7 @@ func NewUserHandler(repo *UserRepository) *UserHandler {
 }
 
 func (h *UserHandler) CreateUser(c *gin.Context) {
-	var input User
+	var input CreateUserRequest
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -33,7 +33,14 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 
 	input.Password = string(hash)
 
-	err = h.repo.CreateUser(&input)
+	newUser := User{
+		Name: input.Name,
+		Username: input.Username,
+		Email: input.Email,
+		Password: input.Password,
+	}
+
+	err = h.repo.CreateUser(&newUser)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
