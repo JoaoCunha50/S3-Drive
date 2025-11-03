@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Route, BrowserRouter as Router, Routes as Switch } from 'react-router'
 import LoadingPage from '../pages/LoadingPage/LoadingPage'
-import { routes } from './Routes'
+import { routes } from './data/BasicRoutes'
 
 export default function AppRouter() {
     return (

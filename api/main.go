@@ -24,6 +24,8 @@ func main() {
 	
 	r := gin.Default()
 
+	router.SetupMainRouter(r, db)
+
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
@@ -32,8 +34,6 @@ func main() {
 		AllowCredentials: false,
 	}))
 	r.OPTIONS("/*path", func(c *gin.Context) { c.Status(204) })
-
-	router.SetupMainRouter(r, db)
 	
 	r.Run(":" + env.PORT)
 }
