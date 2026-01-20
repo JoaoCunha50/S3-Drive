@@ -4,17 +4,20 @@ import (
 	"api/data/info"
 	"api/data/translations"
 	"api/data/users"
-	"api/internal/repositories"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func WebRouter(r *gin.RouterGroup, repos *repositories.Repos) {
+func WebRouter(r *gin.RouterGroup, db *gorm.DB) {
     userGroup := r.Group("/users")
 	translationsGroup := r.Group("/translations")
 	infoGroup := r.Group("/info")
 
-    users.RegisterUserRoutes(userGroup, repos.UsersRepo)
-	translations.RegisterTranslationRoutes(translationsGroup, repos.TranslationsRepo)
-	info.RegisterInfoRoutes(infoGroup, repos.UsersRepo, repos.TranslationsRepo)
+	translationsRepo := translations.NewTranslationRepository(db)
+	usersRepo := users.NewUserRepository(db)
+
+    users.RegisterUserRoutes(userGroup, usersRepo)
+	translations.RegisterTranslationRoutes(translationsGroup, translationsRepo)
+	info.RegisterInfoRoutes(infoGroup, usersRepo, translationsRepo)
 }

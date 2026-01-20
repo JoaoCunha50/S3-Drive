@@ -84,7 +84,7 @@ export default function Login() {
                     <TextInput
                         variant="filled"
                         label="Password"
-                        placeholder="NiceSecure123$%&"
+                        placeholder="NiceSecure123$%"
                         radius={'md'}
                         type={showPassword ? 'text' : 'password'}
                         onChange={(e) =>

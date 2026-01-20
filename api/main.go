@@ -2,7 +2,6 @@ package main
 
 import (
 	"api/internal/config"
-	"api/internal/repositories"
 	"api/internal/utils"
 	"api/router"
 
@@ -24,8 +23,6 @@ func main() {
 		log.Println("Admin created successfully!")
 	}
 
-	repos := repositories.InitRepos(db)
-
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},
@@ -36,6 +33,6 @@ func main() {
 	}))
 	r.OPTIONS("/*path", func(c *gin.Context) { c.Status(204) })
 
-	router.SetupMainRouter(r, repos)
+	router.SetupMainRouter(r, db)
 	r.Run(":" + env.PORT)
 }
