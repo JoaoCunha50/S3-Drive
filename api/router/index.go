@@ -1,8 +1,6 @@
 package router
 
 import (
-	"api/internal/repositories"
-
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
